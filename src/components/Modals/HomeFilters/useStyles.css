@@ -1,0 +1,19 @@
+.box-inputs {
+    display: flex;
+    align-items: center;
+    height: 37px;
+}
+
+.box-button {
+    width: 95%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button {
+    height: 30px;
+    width: 140px;
+    background: #3c678b;
+    border-radius: 20px;
+    color: #ffff;
+}

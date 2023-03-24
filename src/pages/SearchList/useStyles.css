@@ -1,0 +1,21 @@
+.title {
+    font-weight: bold;
+    color: #4E4A47;
+}
+
+.box-cards {
+    width: 100%;
+}
+
+.box-search-body {
+    overflow-y:scroll;
+    height: calc(98vh - 60px);
+}
+
+.box-loading {
+    width: 100%;
+    height: calc(90vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,24 @@
+.box-visualmode {
+    display: flex;
+    align-items: center;
+}
+
+.box-cards-modal {
+    overflow-y: auto;
+    height: 420px;
+    padding-bottom: 10px;
+}
+
+.box-card-modal {
+    padding-top: 5px;
+}
+
+.box-header-card-modal {
+    display: flex;
+    justify-content: space-between;
+}
+
+.box-card-modal-delete-icon {
+    display: flex;
+    justify-content: flex-end;
+}
