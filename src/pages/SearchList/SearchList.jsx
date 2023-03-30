@@ -19,9 +19,9 @@ export const SearchList = () => {
     const value = window.location.search.split("?");
     value.shift();
     if (value) {
-      setsearchValue(value.toString().replaceAll("%20", " "));
+      setsearchValue(value.toString());
       const result = await search(
-        `+${value.toString().replaceAll("%20", "+")}`
+        `${value.toString()}`
       );
       if (result) setcards(result);
       
@@ -57,7 +57,7 @@ export const SearchList = () => {
           className="title"
           style={{ fontSize: "25px", marginLeft: "2%", marginTop: "1%" }}
         >
-          Resultados de la busqueda "{searchValue}" {cards.length > 0 ? `(${cards.length})` : null}
+          Resultados de la busqueda "{searchValue}" {cards.length > 0 ? `({cards.length})` : null}
         </Typography>
         <Cards loading={loading} cards={cards} setcardsSidebar={setcardsSidebar}/>
       </div>
