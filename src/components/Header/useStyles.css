@@ -5,8 +5,12 @@
     width: 100%;
     display: flex;
     align-items: center;
+    transition: all 0.3s ease-in-out;
 }
 
+.box-header.open {
+    width: calc(100% - 300px);
+}
 .grid-container {
     width: 98%;
 }

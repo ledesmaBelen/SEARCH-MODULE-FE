@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Badge, Grid } from "@mui/material";
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -6,21 +6,21 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import GavelIcon from "@mui/icons-material/Gavel";
 import { Avatar } from "@mui/material";
-import { HomeGavelModal } from "../Modals/HomeGavel/HomeGavelModal";
 import "./useStyles.css";
 import { useNavigate } from "react-router-dom";
+import { ModalConfig } from "../Modals/ModalConfig/ModalConfig";
 
-export const Header = ({ value, setvalue }) => {
+export const Header = ({ searchValue, openModalGavel, onClose }) => {
   const navigate = useNavigate();
-  const [openModalGavel, setopenModalGavel] = useState(false);
-  const handleChangeValue = (event) => {
-    setopenModalGavel(event.target.value);
-  };
+  const [valueInput, setvalueInput] = useState("");
+  const [openModalConfig, setopenModalConfig] = useState(false);
+
   const handlechangeInputSearch = (event) => {
-    setvalue(event.target.value);
+    setvalueInput(event.target.value);
   };
+
   return (
-    <div className="box-header">
+    <div className={`box-header ${openModalGavel ? "open" : ""}`}>
       <Grid container className="grid-container">
         <Grid item xs={2}>
           LOGO
@@ -29,12 +29,15 @@ export const Header = ({ value, setvalue }) => {
           <div className="grid-input">
             <SearchIcon
               className="search-icon"
-              onClick={() => navigate(`/search?${value}`)}
+              onClick={() => {
+                navigate(`/search?${valueInput}`);
+                window.location.reload();
+              }}
             />
             <input
               placeholder="Ingrese criterio de busqueda"
               className="input"
-              value={value}
+              value={valueInput}
               onChange={handlechangeInputSearch}
             />
             <TuneIcon
@@ -53,24 +56,36 @@ export const Header = ({ value, setvalue }) => {
           <InfoOutlinedIcon className="icons" style={{ fontSize: "30px" }} />
           <SettingsOutlinedIcon
             className="icons"
-            style={{ fontSize: "30px" }}
+            style={{ fontSize: "30px", cursor: "pointer" }}
+            onClick={() => setopenModalConfig(true)}
           />
-          <GavelIcon
-            sx={{
-              "&:hover": {
-                cursor: "pointer",
-              },
+          <Badge
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
             }}
-            className="icons"
-            style={{ fontSize: "30px" }}
-            onClick={() => setopenModalGavel(true)}
-          />
+            color="secondary"
+            overlap="circular"
+            badgeContent=" "
+          >
+            <GavelIcon
+              sx={{
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+              className="icons"
+              style={{ fontSize: "30px" }}
+              onClick={onClose}
+            />
+          </Badge>
+
           <Avatar className="avatar">AG</Avatar>
         </Grid>
       </Grid>
-      <HomeGavelModal
-        openModalGavel={openModalGavel}
-        setopenModalGavel={setopenModalGavel}
+      <ModalConfig
+        openModalConfig={openModalConfig}
+        setopenModalConfig={setopenModalConfig}
       />
     </div>
   );

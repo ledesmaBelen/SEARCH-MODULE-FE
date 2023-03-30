@@ -1,4 +1,14 @@
 .background {
+    height: 100vh;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+.background.open {
+    width: calc(100% - 300px);
+}
+
+.background-blue {
     background-image: url("../../assets/cielo.jpg");
     background-repeat: no-repeat;
     height: 40%;
@@ -10,7 +20,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding-top: 10px;
+    height: 60px;
 }
 
 .icon {
@@ -25,7 +35,10 @@
     margin-right: 5px;
 }
 
-.background-white { height: 60%; width: 100%; }
+.background-white {
+    height: 60%;
+    width: 100%;
+}
 
 .box-input {
     width: 40%;
@@ -35,15 +48,20 @@
     padding-left: 19px;
     padding-right: 19px;
     border: 2px solid grey;
-    position: absolute;
+    position: fixed;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: all 0.3s ease-in-out;
+
 }
 
+.box-input.open {
+left: calc(50% - 150px);
+}
 .searchIcon {
     color: #6e7073;
 }

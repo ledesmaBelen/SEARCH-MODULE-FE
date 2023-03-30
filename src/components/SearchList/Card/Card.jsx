@@ -6,8 +6,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import "./useStyles.css";
 import { SearchItemModal } from "../../Modals/SearchItem/SearchItemModal";
 
-export const Card = ({ item }) => {
-  const [openModalSearchItem, setopenModalSearchItem] = useState(false)
+export const Card = ({ item, setcardsSidebar }) => {
+  const [openModalSearchItem, setopenModalSearchItem] = useState(false);
 
   const handleSetExp = (item) => {
     const cardsSelected = sessionStorage.getItem("cards")
@@ -20,6 +20,7 @@ export const Card = ({ item }) => {
     if (!findCard) {
       cardsSelected.push(item);
       sessionStorage.setItem("cards", JSON.stringify(cardsSelected));
+      setcardsSidebar(cardsSelected);
     }
   };
 
@@ -51,7 +52,7 @@ export const Card = ({ item }) => {
               cursor: "pointer",
             },
           }}
-          onClick={()=> setopenModalSearchItem(true)}
+          onClick={() => setopenModalSearchItem(true)}
         >
           {item.sectoTitulo}
         </Typography>
@@ -64,42 +65,46 @@ export const Card = ({ item }) => {
           <Typography
             style={{ paddingLeft: 10, fontSize: 12, color: "#4E4A47" }}
           >
-            {item.textoMedio}
+            ...{item.textoMedio}...
           </Typography>
         </div>
         <div className="box-footer-card">
           <div className="box-footer-card-options">
-            <Typography
+            <p
               style={{
                 fontSize: 13,
                 fontWeight: "bold",
                 color: "#4E4A47",
               }}
             >
-              R.J:{item.abajoRJ}
-            </Typography>
-            <Typography
+              R.J: <span style={{ color: "#2FA83F" }}>{item.abajoRJ}</span>
+            </p>
+            <p
               style={{
                 fontSize: 13,
                 fontWeight: "bold",
                 color: "#4E4A47",
               }}
             >
-              Preventivo({item.abajoPreventivo > 0 ? item.abajoPreventivo : 0})
-            </Typography>
-            <Typography
-              style={{ fontSize: 13, fontWeight: "bold", color: "#4E4A47" }}
-            >
+              Preventivo 
+              (<span style={{ color: "#2FA83F" }}>
+                {item.abajoPreventivo > 0 ? item.abajoPreventivo : 0}
+              </span>)
+            </p>
+            <p style={{ fontSize: 13, fontWeight: "bold", color: "#4E4A47" }}>
               Parte(
-              {(parseInt(item.abajoPersonLegajo) || 0) +
-                (parseInt(item.abajoPersonDenuncia) || 0)}
+              <span style={{ color: "#2FA83F" }}>
+                {(parseInt(item.abajoPersonLegajo) || 0) +
+                  (parseInt(item.abajoPersonDenuncia) || 0)}
+              </span>
               )
-            </Typography>
-            <Typography
-              style={{ fontSize: 13, fontWeight: "bold", color: "#4E4A47" }}
-            >
-              Secuestros({item.abajoSecuestros || 0})
-            </Typography>
+            </p>
+            <p style={{ fontSize: 13, fontWeight: "bold", color: "#4E4A47" }}>
+              Secuestros (<span style={{ color: "#2FA83F" }}>{item.abajoSecuestros || 0}</span>)
+            </p>
+            <p style={{ fontSize: 13, fontWeight: "bold", color: "#D90404" }}>
+              Robo Art. {item.abajoTituloDelito}
+            </p>
           </div>
           <div>
             <Tooltip title={`Ver ${item.cabezeraIzq}`}>
@@ -116,7 +121,11 @@ export const Card = ({ item }) => {
         </div>
       </div>
       <Divider style={{ width: "65%" }} />
-      <SearchItemModal item={item} openModalSearchItem={openModalSearchItem} setopenModalSearchItem={setopenModalSearchItem} />
+      <SearchItemModal
+        item={item}
+        openModalSearchItem={openModalSearchItem}
+        setopenModalSearchItem={setopenModalSearchItem}
+      />
     </>
   );
 };

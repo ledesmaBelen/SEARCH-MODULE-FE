@@ -40,6 +40,7 @@ export const SearchItemModal = ({
           padding: "15px 20px 5px 20px",
           fontSize: 16,
           fontWeight: "bold",
+          overflowY: 'auto'
         }}
       >
         {details && <h1>ID:{details.idprev_digital}</h1>}

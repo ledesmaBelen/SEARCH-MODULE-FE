@@ -1,61 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "@mui/system";
+import React from "react";
+
 import {
   Divider,
   IconButton,
-  Modal,
   Tooltip,
   Typography,
 } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import "./useStyles.css";
+import "./useStyle.css"
 
-export const HomeGavelModal = ({ openModalGavel, setopenModalGavel }) => {
-  const [cards, setcards] = useState([]);
-
-  useEffect(() => {
-    if (openModalGavel && sessionStorage.getItem("cards")) {
-      console.log(sessionStorage.getItem("cards"));
-      setcards(JSON.parse(sessionStorage.getItem("cards")));
-    }
-  }, [openModalGavel]);
+const GavelSidebar = ({ openModalGavel, onClose, cardsSidebar, setcardsSidebar }) => {
 
   const handleRemove = (item) => {
     // CONSULTAR SI EL NUMERO DE LEGAJO ES UNICO
-    const expedientes = cards.filter(
+    const expedientes = cardsSidebar.filter(
       (elem) => elem.cabezeraDerDato !== item.cabezeraDerDato
     );
     sessionStorage.setItem("cards", JSON.stringify(expedientes));
-    setcards(expedientes);
+    setcardsSidebar(expedientes);
   };
 
   return (
-    <Modal
-      open={openModalGavel}
-      onClose={() => setopenModalGavel(false)}
-      disableAutoFocus
-    >
-      <Box
-        sx={{
-          width: 200,
-          height: 600,
-          borderRadius: 3,
-          bgcolor: "#f5f7fb",
-          border: "2px solid #3d688c",
-          boxShadow: 24,
-          position: "absolute",
-          top: "50%",
-          left: "90%",
-          transform: "translate(-50%, -50%)",
-          color: "#727272",
-          padding: "15px 20px 5px 20px",
-          fontSize: 16,
-          fontWeight: "bold",
-        }}
-      >
-
+    <div className={`sidebar ${openModalGavel ? "open" : ""}`}>
         <div className="box-cards-modal">
-          {cards.map((item, index) => (
+          {cardsSidebar.map((item, index) => (
             <div key={index} className="box-card-modal">
               <div className="box-card-modal-delete-icon">
                 <Tooltip title={`Quitar ${item.cabezeraIzq}`}>
@@ -89,7 +57,9 @@ export const HomeGavelModal = ({ openModalGavel, setopenModalGavel }) => {
             </div>
           ))}
         </div>
-      </Box>
-    </Modal>
+      
+    </div>
   );
 };
+
+export default GavelSidebar;

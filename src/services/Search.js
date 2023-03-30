@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const searchValue = async (value) => {
+export const search = async (value) => {
   try {
     const response = await axios.get(
       `http://168.181.186.118:9093/search/fseach2/${value}`
