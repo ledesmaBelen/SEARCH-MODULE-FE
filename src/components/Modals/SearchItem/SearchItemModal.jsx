@@ -1,4 +1,11 @@
-import { Box, Modal, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Modal,
+  Typography,
+  Button,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { handleGetItemDetails } from "../../../services/Search";
 import { handleGetPartes } from "../../../services/Search";
@@ -14,6 +21,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import CloseIcon from "@mui/icons-material/Close";
+import ShareIcon from "@mui/icons-material/Share";
+import PrintIcon from "@mui/icons-material/Print";
 
 export const SearchItemModal = ({
   item,
@@ -89,12 +98,33 @@ export const SearchItemModal = ({
             onClick={() => setopenModalSearchItem(false)}
           />
         </div>
-        <img
-          src="https://mpajujuy.gob.ar/images/imgFootLogo.png"
-          alt="Lamp"
-          width="232"
-          height="132"
-        ></img>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <img
+            src="https://mpajujuy.gob.ar/images/imgFootLogo.png"
+            alt="Lamp"
+            width="232"
+            height="132"
+          ></img>
+          <div>
+            <Tooltip title="Compartir">
+              <IconButton>
+                <ShareIcon style={{ fontSize: 40, paddingRight: 10 }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Imprimir">
+              <IconButton>
+                <PrintIcon style={{ fontSize: 40 }} />
+              </IconButton>
+            </Tooltip>
+          </div>
+        </div>
+
         {mesexpe && <h3> fav ID:{mesexpe.idmes_expedientes}</h3>}
         <Typography>Modelo de Certificación de Causa</Typography>
         <Typography
