@@ -22,17 +22,29 @@ export const SearchList = () => {
     value.shift();
     if (value) {
       setsearchValue(value.toString().replaceAll("%20", " "));
-      const result = await search(`${value.toString()}`);
+      let params = `${value.toString().replaceAll("%20", " ")}`;
+      if (sessionStorage.getItem("filters")) {
+        const filters = JSON.parse(sessionStorage.getItem("filters"));
+        const countcheckboxs = filters.checks.filter((check) => check.check);
+        if (countcheckboxs.length > 0 && filters.checks.length > 0) {
+          filters.checks.map((check) => {
+            params += `&${check.value}=${check.check ? 1 : 0}`;
+          });
+        }
+        if (filters.desde) params += `&desde=${filters.desde.split("T")[0]}`;
+        if (filters.hasta) params += `&hasta=${filters.hasta.split("T")[0]}`;
+
+        console.log(params);
+      }
+      const result = await search(params);
       if (result) setcards(result);
     }
+
     setloading(false);
   };
 
   useEffect(() => {
     handleGetParams();
-  }, []);
-
-  useEffect(() => {
     if (sessionStorage.getItem("cards")) {
       setcardsSidebar(JSON.parse(sessionStorage.getItem("cards")));
     }
@@ -56,7 +68,7 @@ export const SearchList = () => {
           style={{ fontSize: "25px", marginLeft: "2%", marginTop: "1%" }}
         >
           Resultados de la busqueda "{searchValue}"{" "}
-          {cards.length > 0 ? `(${cards.length})` : ""}
+          {cards.length > 0 ? `(${cards.length} resultados)` : ""}
         </Typography>
         <Cards
           loading={loading}

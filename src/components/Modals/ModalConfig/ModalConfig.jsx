@@ -13,6 +13,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import { radioButtons } from "./buttonsData";
 import "./classes.css";
+import CloseIcon from "@mui/icons-material/Close";
 
 export const ModalConfig = ({ openModalConfig, setopenModalConfig }) => {
   return (
@@ -39,6 +40,12 @@ export const ModalConfig = ({ openModalConfig, setopenModalConfig }) => {
           fontWeight: "bold",
         }}
       >
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <CloseIcon
+            style={{ cursor: "pointer" }}
+            onClick={() => setopenModalConfig(false)}
+          />
+        </div>
         <div className="sidebar-content">
           <Typography>Densidad</Typography>
           <FormControl>

@@ -96,6 +96,7 @@ export const Header = ({
             <BadgeFilters
               openModal={handleBadgeFilters}
               content={contentBadgeFilters}
+              setcontentBadgeFilters={setcontentBadgeFilters}
             />
           </div>
         </Grid>
@@ -104,7 +105,10 @@ export const Header = ({
           <SettingsOutlinedIcon
             className="icons"
             style={{ fontSize: "30px", cursor: "pointer" }}
-            onClick={() => setopenModalConfig(true)}
+            onClick={() => {
+              onClose();
+              setopenModalConfig(true);
+            }}
           />
           <BadgeGavel openmodal={onClose} content={cardsSidebar.length} />
           <Avatar className="avatar">AG</Avatar>

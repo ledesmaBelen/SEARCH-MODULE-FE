@@ -146,7 +146,7 @@ export const Card = ({ item, setcardsSidebar }) => {
                     cursor: "pointer",
                   }}
                 >
-                  Robo Art. {item.abajoTituloDelito}
+                  Artículo: {item.abajoTituloDelito}
                 </p>
               </Tooltip>
             </div>
@@ -165,7 +165,7 @@ export const Card = ({ item, setcardsSidebar }) => {
           </div>
         </div>
       </div>
-      <Divider style={{ width: "65%" }} />
+      <Divider style={{ width: "70%" }} />
       <SearchItemModal
         item={item}
         openModalSearchItem={openModalSearchItem}

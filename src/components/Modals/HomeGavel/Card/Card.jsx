@@ -11,7 +11,6 @@ export const Card = ({
   setopenModalSearchItem,
 }) => {
   const handleRemove = (item) => {
-    // CONSULTAR SI EL NUMERO DE LEGAJO ES UNICO
     const expedientes = cardsSidebar.filter(
       (elem) => elem.cabezeraDerDato !== item.cabezeraDerDato
     );
@@ -23,6 +22,7 @@ export const Card = ({
     const fecha = date.split(" ");
     return fecha.length > 0 ? fecha[0] : "";
   };
+
   const handleViewItem = () => {
     setsearchItem(item);
     onClose();
@@ -60,10 +60,8 @@ export const Card = ({
         </Typography>
       </Box>
       <div className="box-header-card-modal" onClick={handleViewItem}>
-        <p style={{ fontSize: 11 }}>
-          <span style={{ fontWeight: "bold", color: "#595340" }}>
-            {item.cabezeraDerTit} NRO:
-          </span>{" "}
+        <p style={{ fontSize: 11, color: "#595340" }}>
+          <span style={{ fontWeight: "bold" }}>{item.cabezeraDerTit} NRO:</span>{" "}
           {item.cabezeraDerDato}
         </p>
         <p style={{ fontWeight: "bold", fontSize: 10, color: "#595340" }}>
@@ -72,7 +70,7 @@ export const Card = ({
       </div>
       <Typography
         style={{
-          fontSize: 13,
+          fontSize: 14,
           paddingBottom: 5,
           color: "#1b2f6a",
           fontWeight: "bold",

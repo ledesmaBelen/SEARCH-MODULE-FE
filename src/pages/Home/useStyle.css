@@ -64,6 +64,7 @@ left: calc(50% - 150px);
 }
 .searchIcon {
     color: #6e7073;
+    cursor: pointer;
 }
 
 .input {

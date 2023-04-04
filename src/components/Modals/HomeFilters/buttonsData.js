@@ -19,29 +19,24 @@ export const radioButtons = [
 export let checkboxs = [
   {
     label: "Expedientes",
-    value: "files",
+    value: "exp",
     check: false
   },
   {
     label: "Denuncias",
-    value: "complaints",
+    value: "den",
     check: false
   },
   {
     label: "Partes",
-    value: "parties",
+    value: "par",
     check: false
   },
   {
-    label: "CAV",
-    value: "CAV",
+    label: "secuestros",
+    value: "sec",
     check: false
-  },
-  {
-    label: "Trámites",
-    value: "Procedure",
-    check: false
-  },
+  }
 ];
 
 export const selects = [

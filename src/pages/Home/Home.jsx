@@ -10,6 +10,8 @@ import "./useStyle.css";
 import GavelSidebar from "../../components/Modals/HomeGavel/SidebarCardsRight";
 import { BadgeFilters } from "../../components/Badges/BadgeFilters/BadgeFilters";
 import { BadgeGavel } from "../../components/Badges/BadgeGavel/BadgeGavel";
+import { ModalConfig } from "../../components/Modals/ModalConfig/ModalConfig";
+import { SearchItemModal } from "../../components/Modals/SearchItem/SearchItemModal";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -18,6 +20,9 @@ export const Home = () => {
   const [value, setvalue] = useState("");
   const [cardsSidebar, setcardsSidebar] = useState([]);
   const [contentBadgeFilters, setcontentBadgeFilters] = useState(0);
+  const [openModalConfig, setopenModalConfig] = useState(false);
+  const [searchItem, setsearchItem] = useState(null);
+  const [openModalSearchItem, setopenModalSearchItem] = useState(false);
 
   const handleChangeValue = (event) => {
     setvalue(event.target.value);
@@ -45,7 +50,14 @@ export const Home = () => {
       <div className="background-blue">
         <div className="box-options">
           <InfoOutlinedIcon className="icon" style={{ fontSize: 30 }} />
-          <SettingsOutlinedIcon className="icon" style={{ fontSize: 30 }} />
+          <SettingsOutlinedIcon
+            className="icon"
+            style={{ fontSize: 30, cursor: "pointer" }}
+            onClick={() => {
+              setopenModalGavel(false);
+              setopenModalConfig(true);
+            }}
+          />
           <BadgeGavel
             openmodal={handleSidebarToggle}
             content={cardsSidebar.length}
@@ -66,6 +78,7 @@ export const Home = () => {
         <BadgeFilters
           openModal={handleBadgeFilters}
           content={contentBadgeFilters}
+          setcontentBadgeFilters={setcontentBadgeFilters}
         />
       </div>
       <HomeFiltersModal
@@ -74,12 +87,22 @@ export const Home = () => {
         content={contentBadgeFilters}
         setcontentBadgeFilters={setcontentBadgeFilters}
       />
-
+      <ModalConfig
+        openModalConfig={openModalConfig}
+        setopenModalConfig={setopenModalConfig}
+      />
       <GavelSidebar
         openModalGavel={openModalGavel}
         onClose={handleSidebarToggle}
         cardsSidebar={cardsSidebar}
         setcardsSidebar={setcardsSidebar}
+        setsearchItem={setsearchItem}
+        setopenModalSearchItem={setopenModalSearchItem}
+      />
+      <SearchItemModal
+        item={searchItem}
+        openModalSearchItem={openModalSearchItem}
+        setopenModalSearchItem={setopenModalSearchItem}
       />
     </div>
   );

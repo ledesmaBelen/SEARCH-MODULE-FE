@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import {
   Checkbox,
@@ -11,6 +11,7 @@ import {
   Radio,
   RadioGroup,
   Select,
+  TextField,
   Typography,
 } from "@mui/material";
 import "./useStyles.css";
@@ -33,7 +34,6 @@ export const HomeFiltersModal = ({
   const [valueRadioButtons, setvalueRadioButtons] = useState(
     radioButtons.find((button) => button.default).value
   );
-  const [ischangeRadioButton, setischangeRadioButton] = useState(false);
   const [checks, setChecks] = useState(checkboxs);
 
   const handleChangeRadioButtons = (e) => {
@@ -42,13 +42,6 @@ export const HomeFiltersModal = ({
     const button = radioButtons.find(
       (button) => button.value === e.target.value
     );
-    if (!button.default && !ischangeRadioButton) {
-      setischangeRadioButton(true);
-      setcontentBadgeFilters(content + 1);
-    } else if (button.default && ischangeRadioButton) {
-      setcontentBadgeFilters(content - 1);
-      setischangeRadioButton(false);
-    }
   };
 
   const handlesetCheckboxs = (item, event) => {
@@ -60,12 +53,37 @@ export const HomeFiltersModal = ({
           : checkbox
       )
     );
-    if (item.check) {
-      setcontentBadgeFilters(content + 1);
-    } else if (!item.check && content > 0) {
-      setcontentBadgeFilters(content - 1);
-    }
   };
+
+  const handleSaveFilters = () => {
+    const obj = {
+      desde,
+      hasta,
+      valueRadioButtons,
+      checks,
+    };
+    sessionStorage.setItem("filters", JSON.stringify(obj));
+    setopenModalFilters(false);
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("filters") && openModalFilters) {
+      const filters = JSON.parse(sessionStorage.getItem("filters"));
+      let count = 0;
+      if (filters.desde) setdesde(new Date(filters.desde));
+      if (filters.hasta) sethasta(new Date(filters.hasta));
+      if (filters.valueRadioButtons)
+        setvalueRadioButtons(filters.valueRadioButtons);
+      const checkboxs = filters.checks.filter((check) => check.check);
+      if (checkboxs && checkboxs.length > 0) {
+        setChecks(filters.checks);
+        count += checkboxs.length;
+      }
+      if (filters.desde || filters.hasta) count += 1;
+      setcontentBadgeFilters(count);
+    }
+  }, [openModalFilters]);
 
   return (
     <Modal
@@ -161,7 +179,10 @@ export const HomeFiltersModal = ({
 
               <DatePicker
                 selected={desde}
-                onChange={(fecha) => setdesde(fecha)}
+                onChange={(fecha) => {
+                  console.log(fecha);
+                  setdesde(fecha);
+                }}
                 locale="es"
               />
               <Typography
@@ -186,21 +207,7 @@ export const HomeFiltersModal = ({
                   >
                     {item.label}:
                   </Typography>
-                  <FormControl sx={{ m: 1, minWidth: 120 }}>
-                    <Select
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                      value={10}
-                      style={{ height: 30 }}
-                    >
-                      <MenuItem value=""></MenuItem>
-                      {item.values.map((value) => (
-                        <MenuItem value={value.value} key={value.value}>
-                          {value.value}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  <input type="text"></input>
                 </div>
               </Grid>
               <Grid item xs={6}></Grid>
@@ -208,7 +215,9 @@ export const HomeFiltersModal = ({
           ))}
         </Grid>
         <div className="box-button">
-          <button className="button">Aplicar filtros</button>
+          <button className="button" onClick={handleSaveFilters}>
+            Aplicar filtros
+          </button>
         </div>
       </Box>
     </Modal>

@@ -18,14 +18,13 @@ const GavelSidebar = ({
     <div className={`sidebar ${openModalGavel ? "open" : ""}`}>
       <div className="box-cards-modal">
         <div className="box-cards-close-icon">
-          <CloseIcon style={{ cursor: "pointer" }} onClick={onClose} />
-        </div>
-        <div className="box-cards-title">
           <Typography style={{ fontSize: 18, fontWeight: "bold" }}>
             Resultados guardados
           </Typography>
-          <Divider />
+          <CloseIcon style={{ cursor: "pointer" }} onClick={onClose} />
         </div>
+
+        <Divider />
         <div className="box-medium-cards">
           {cardsSidebar.map((item, index) => (
             <Card
