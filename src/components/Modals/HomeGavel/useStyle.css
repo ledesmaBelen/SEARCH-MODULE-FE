@@ -6,33 +6,62 @@
     height: 100%;
     transition: all 0.3s ease-in-out;
     z-index: 9999;
-    background-color: coral;
     border-radius: 3;
     box-shadow: 24;
     color: #727272;
     font-size: 16;
     font-weight: bold;
-    
+    background-color: #ffff !important;
 }
 
 .sidebar.open {
     right: 0;
-    box-shadow: -1px 0px 5px 0px #727272;}
+    box-shadow: -1px 0px 5px 0px #727272;
+}
+
 .box-visualmode {
     display: flex;
     align-items: center;
 }
 
 .box-cards-modal {
-    height: 90%;
     padding-bottom: 10px;
+    height: 100% !important;
+}
+
+.box-cards-title {
+    padding-left: 5px;
+    height: 5%;
+}
+
+.box-cards-close-icon {
+    width: 97%;
+    padding-top: 5px;
+    display: flex;
+    justify-content: flex-end;
+    height: 5%;
+}
+
+.box-medium-cards {
+    width: 100%;
+    height: 77%;
+    overflow-y: auto;
 }
 
 .box-card-modal {
+    width: 97%;
     padding-top: 5px;
+    padding-left: 5px;
+    
+}
+
+.box-card-modal:hover{
+    background-color: #f2f2f2;
+    cursor: pointer;
 }
 
 .box-header-card-modal {
+    width: 97%;
     display: flex;
     justify-content: space-between;
 }
@@ -40,4 +69,13 @@
 .box-card-modal-delete-icon {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+}
+
+.box-icons{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 10%;
 }

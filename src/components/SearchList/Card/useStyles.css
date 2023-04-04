@@ -1,5 +1,5 @@
 .box-card {
-    width: 60%;
+    width: 70%;
     height: 160px;
     margin: 15px 0px 15px 0px;
     margin-left: 2%;
@@ -27,8 +27,7 @@
 }
 
 .box-footer-card-options{
-    width: 50%;
+    width: 85%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }

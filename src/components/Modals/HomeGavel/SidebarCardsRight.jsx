@@ -1,63 +1,74 @@
 import React from "react";
+import { Divider, IconButton, Tooltip, Typography } from "@mui/material";
+import "./useStyle.css";
+import CloseIcon from "@mui/icons-material/Close";
+import ShareIcon from "@mui/icons-material/Share";
+import PrintIcon from "@mui/icons-material/Print";
+import { Card } from "./Card/Card";
 
-import {
-  Divider,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import "./useStyle.css"
-
-const GavelSidebar = ({ openModalGavel, onClose, cardsSidebar, setcardsSidebar }) => {
-
-  const handleRemove = (item) => {
-    // CONSULTAR SI EL NUMERO DE LEGAJO ES UNICO
-    const expedientes = cardsSidebar.filter(
-      (elem) => elem.cabezeraDerDato !== item.cabezeraDerDato
-    );
-    sessionStorage.setItem("cards", JSON.stringify(expedientes));
-    setcardsSidebar(expedientes);
-  };
-
+const GavelSidebar = ({
+  openModalGavel,
+  onClose,
+  cardsSidebar,
+  setcardsSidebar,
+  setsearchItem,
+  setopenModalSearchItem,
+}) => {
   return (
     <div className={`sidebar ${openModalGavel ? "open" : ""}`}>
-        <div className="box-cards-modal">
+      <div className="box-cards-modal">
+        <div className="box-cards-close-icon">
+          <CloseIcon style={{ cursor: "pointer" }} onClick={onClose} />
+        </div>
+        <div className="box-cards-title">
+          <Typography style={{ fontSize: 18, fontWeight: "bold" }}>
+            Resultados guardados
+          </Typography>
+          <Divider />
+        </div>
+        <div className="box-medium-cards">
           {cardsSidebar.map((item, index) => (
-            <div key={index} className="box-card-modal">
-              <div className="box-card-modal-delete-icon">
-                <Tooltip title={`Quitar ${item.cabezeraIzq}`}>
-                  <IconButton onClick={() => handleRemove(item)}>
-                    <RemoveCircleOutlineIcon
-                      style={{ cursor: "pointer", fontSize: 16 }}
-                    />
-                  </IconButton>
-                </Tooltip>
-              </div>
-              <div className="box-header-card-modal">
-                <Typography style={{ fontSize: 10, fontWeight: "bold" }}>
-                  {item.cabezeraDerTit} NRO: {item.cabezeraDerDato}
-                </Typography>
-                <Typography style={{ fontWeight: "bold", fontSize: 10 }}>
-                  {item.fecha1}
-                </Typography>
-              </div>
-              <Typography
-                style={{
-                  fontSize: 13,
-                  paddingBottom: 5,
-                  color: "#1b2f6a",
-                  fontWeight: "bold",
-                }}
-              >
-                {item.sectoTitulo}
-              </Typography>
-
-              <Divider />
-            </div>
+            <Card
+              item={item}
+              cardsSidebar={cardsSidebar}
+              setcardsSidebar={setcardsSidebar}
+              onClose={onClose}
+              setsearchItem={setsearchItem}
+              setopenModalSearchItem={setopenModalSearchItem}
+              key={index}
+            />
           ))}
         </div>
-      
+
+        <div className="box-icons">
+          <Tooltip title="Compartir">
+            <IconButton>
+              <ShareIcon
+                sx={{
+                  fontSize: 30,
+                  color: "#595340",
+                  "&:hover": {
+                    color: "#1b2f6a",
+                  },
+                }}
+              />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Imprimir">
+            <IconButton>
+              <PrintIcon
+                sx={{
+                  fontSize: 30,
+                  color: "#595340",
+                  "&:hover": {
+                    color: "#1b2f6a",
+                  },
+                }}
+              />
+            </IconButton>
+          </Tooltip>
+        </div>
+      </div>
     </div>
   );
 };

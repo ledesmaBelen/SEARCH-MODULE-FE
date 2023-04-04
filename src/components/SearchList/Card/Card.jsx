@@ -1,7 +1,6 @@
 import { Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined";
-import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import SearchIcon from "@mui/icons-material/Search";
 import "./useStyles.css";
 import { SearchItemModal } from "../../Modals/SearchItem/SearchItemModal";
@@ -23,7 +22,10 @@ export const Card = ({ item, setcardsSidebar }) => {
       setcardsSidebar(cardsSelected);
     }
   };
-
+  const getDate = (date) => {
+    const fecha = date.split(" ");
+    return fecha.length > 0 ? fecha[0] : "";
+  };
   return (
     <>
       <div className="box-card">
@@ -60,7 +62,7 @@ export const Card = ({ item, setcardsSidebar }) => {
           <Typography
             style={{ fontWeight: "bold", fontSize: 12, color: "#4E4A47" }}
           >
-            {item.fecha1}
+            {getDate(item.fecha1)}
           </Typography>
           <Typography
             style={{ paddingLeft: 10, fontSize: 12, color: "#4E4A47" }}
@@ -75,6 +77,7 @@ export const Card = ({ item, setcardsSidebar }) => {
                 fontSize: 13,
                 fontWeight: "bold",
                 color: "#4E4A47",
+                width: "8%",
               }}
             >
               R.J: <span style={{ color: "#2FA83F" }}>{item.abajoRJ}</span>
@@ -84,14 +87,25 @@ export const Card = ({ item, setcardsSidebar }) => {
                 fontSize: 13,
                 fontWeight: "bold",
                 color: "#4E4A47",
+                paddingLeft: "10px",
+                width: "15%",
               }}
             >
-              Preventivo 
-              (<span style={{ color: "#2FA83F" }}>
+              Preventivo (
+              <span style={{ color: "#2FA83F" }}>
                 {item.abajoPreventivo > 0 ? item.abajoPreventivo : 0}
-              </span>)
+              </span>
+              )
             </p>
-            <p style={{ fontSize: 13, fontWeight: "bold", color: "#4E4A47" }}>
+            <p
+              style={{
+                fontSize: 13,
+                paddingLeft: "10px",
+                fontWeight: "bold",
+                color: "#4E4A47",
+                width: "10%",
+              }}
+            >
               Parte(
               <span style={{ color: "#2FA83F" }}>
                 {(parseInt(item.abajoPersonLegajo) || 0) +
@@ -99,16 +113,47 @@ export const Card = ({ item, setcardsSidebar }) => {
               </span>
               )
             </p>
-            <p style={{ fontSize: 13, fontWeight: "bold", color: "#4E4A47" }}>
-              Secuestros (<span style={{ color: "#2FA83F" }}>{item.abajoSecuestros || 0}</span>)
+            <p
+              style={{
+                fontSize: 13,
+                paddingLeft: "10px",
+                fontWeight: "bold",
+                color: "#4E4A47",
+                width: "15%",
+              }}
+            >
+              Secuestros (
+              <span style={{ color: "#2FA83F" }}>
+                {item.abajoSecuestros || 0}
+              </span>
+              )
             </p>
-            <p style={{ fontSize: 13, fontWeight: "bold", color: "#D90404" }}>
-              Robo Art. {item.abajoTituloDelito}
-            </p>
+            <div
+              style={{
+                paddingLeft: "10px",
+                width: "45%",
+              }}
+            >
+              <Tooltip title={item.abajoTituloDelito}>
+                <p
+                  style={{
+                    fontSize: 13,
+                    fontWeight: "bold",
+                    color: "#D90404",
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    cursor: "pointer",
+                  }}
+                >
+                  Robo Art. {item.abajoTituloDelito}
+                </p>
+              </Tooltip>
+            </div>
           </div>
           <div>
             <Tooltip title={`Ver ${item.cabezeraIzq}`}>
-              <IconButton>
+              <IconButton onClick={() => setopenModalSearchItem(true)}>
                 <SearchIcon />
               </IconButton>
             </Tooltip>

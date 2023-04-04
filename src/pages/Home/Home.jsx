@@ -1,58 +1,54 @@
 import React, { useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import TuneIcon from "@mui/icons-material/Tune";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import GavelIcon from "@mui/icons-material/Gavel";
-import { Avatar, Badge } from "@mui/material";
+import { Avatar } from "@mui/material";
 import { useState } from "react";
 import { HomeFiltersModal } from "../../components/Modals/HomeFilters/HomeFiltersModal";
 import { useNavigate } from "react-router-dom";
 import "./useStyle.css";
 import GavelSidebar from "../../components/Modals/HomeGavel/SidebarCardsRight";
+import { BadgeFilters } from "../../components/Badges/BadgeFilters/BadgeFilters";
+import { BadgeGavel } from "../../components/Badges/BadgeGavel/BadgeGavel";
 
 export const Home = () => {
   const navigate = useNavigate();
-
   const [openModalFilters, setopenModalFilters] = useState(false);
   const [openModalGavel, setopenModalGavel] = useState(false);
   const [value, setvalue] = useState("");
   const [cardsSidebar, setcardsSidebar] = useState([]);
+  const [contentBadgeFilters, setcontentBadgeFilters] = useState(0);
 
   const handleChangeValue = (event) => {
     setvalue(event.target.value);
   };
 
   const handleSearchValue = (event) => {
-    if (event.key === "Enter") {
-      navigate(`/search?${value}`);
-    }
+    if (event.key === "Enter") navigate(`/search?${value}`);
   };
 
   const handleSidebarToggle = () => {
     setopenModalGavel(!openModalGavel);
   };
+
+  const handleBadgeFilters = () => {
+    setopenModalFilters(!openModalFilters);
+  };
+
   useEffect(() => {
-    if (sessionStorage.getItem("cards")) {
-      console.log("entro");
+    if (sessionStorage.getItem("cards"))
       setcardsSidebar(JSON.parse(sessionStorage.getItem("cards")));
-    }
   }, []);
+
   return (
     <div className={`background ${openModalGavel ? "open" : ""}`}>
       <div className="background-blue">
         <div className="box-options">
           <InfoOutlinedIcon className="icon" style={{ fontSize: 30 }} />
           <SettingsOutlinedIcon className="icon" style={{ fontSize: 30 }} />
-          <GavelIcon
-            className="icon"
-            sx={{
-              "&:hover": {
-                cursor: "pointer",
-              },
-            }}
-            style={{ fontSize: 30 }}
-            onClick={handleSidebarToggle}
+          <BadgeGavel
+            openmodal={handleSidebarToggle}
+            content={cardsSidebar.length}
           />
           <Avatar className="avatar">AG</Avatar>
         </div>
@@ -67,31 +63,16 @@ export const Home = () => {
           onChange={handleChangeValue}
           onKeyDown={handleSearchValue}
         />
-        <Badge
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          color="secondary"
-          overlap="circular"
-          badgeContent=" "
-        >
-          <TuneIcon
-            sx={{
-              color: "#6e7073",
-              "&:hover": {
-                background: "#D9D9D9",
-                borderRadius: 10,
-                cursor: "pointer",
-              },
-            }}
-            onClick={() => setopenModalFilters(true)}
-          />
-        </Badge>
+        <BadgeFilters
+          openModal={handleBadgeFilters}
+          content={contentBadgeFilters}
+        />
       </div>
       <HomeFiltersModal
         openModalFilters={openModalFilters}
         setopenModalFilters={setopenModalFilters}
+        content={contentBadgeFilters}
+        setcontentBadgeFilters={setcontentBadgeFilters}
       />
 
       <GavelSidebar

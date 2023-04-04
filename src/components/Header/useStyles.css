@@ -30,6 +30,7 @@
 
 .search-icon {
     color: #6e7073;
+    cursor: pointer;
 }
 
 .input {

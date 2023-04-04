@@ -1,4 +1,4 @@
-import { Box, Modal, Typography, Button} from "@mui/material";
+import { Box, Modal, Typography, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { handleGetItemDetails } from "../../../services/Search";
 import { handleGetPartes } from "../../../services/Search";
@@ -6,13 +6,14 @@ import { handleGetMesExpeDetails } from "../../../services/Search";
 import { handleGetMesExpePersons } from "../../../services/Search";
 import { handleGetExpeconDenun } from "../../../services/Search";
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import CloseIcon from "@mui/icons-material/Close";
 
 export const SearchItemModal = ({
   item,
@@ -23,14 +24,12 @@ export const SearchItemModal = ({
   const [partes, setPartes] = useState(null);
   const [mesexpe, setMesexpe] = useState(null);
   const [partesexpe, setPartesexpe] = useState([]);
-  const [expecondenun , setExpecondenun] = useState(null);
+  const [expecondenun, setExpecondenun] = useState(null);
 
   const getItem = async () => {
     const result = await handleGetItemDetails(item.cabezeraDerDato);
     console.log(result);
     if (result) setDetails(result.return[0]);
-    
-    
 
     const result2 = await handleGetMesExpeDetails(item.cabezeraDerDato);
     console.log(result2);
@@ -44,11 +43,9 @@ export const SearchItemModal = ({
     console.log(result4);
     if (result4) setExpecondenun(result4[0]);
 
-    
     const result1 = await handleGetPartes(item.cabezeraDerDato);
     console.log(result1);
     if (result1) setPartes(result1.return[0]);
-
   };
 
   useEffect(() => {
@@ -64,7 +61,7 @@ export const SearchItemModal = ({
       <Box
         sx={{
           width: "70%",
-          height: 500,
+          height: 550,
           borderRadius: 3,
           bgcolor: "#f5f7fb",
           border: "2px solid #3d688c",
@@ -77,35 +74,49 @@ export const SearchItemModal = ({
           padding: "15px 20px 5px 20px",
           fontSize: 16,
           fontWeight: "bold",
-          overflow : 'auto',
-          fontFamily: "Courier New"
+          overflow: "auto",
+          fontFamily: "Courier New",
         }}
       >
-        <img src="https://mpajujuy.gob.ar/images/imgFootLogo.png" alt="Lamp" width="232" height="132"></img>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <CloseIcon
+            sx={{ cursor: "pointer" }}
+            onClick={() => setopenModalSearchItem(false)}
+          />
+        </div>
+        <img
+          src="https://mpajujuy.gob.ar/images/imgFootLogo.png"
+          alt="Lamp"
+          width="232"
+          height="132"
+        ></img>
         {mesexpe && <h3> fav ID:{mesexpe.idmes_expedientes}</h3>}
-        <Typography>
-          Modelo de Certificación de Causa
+        <Typography>Modelo de Certificación de Causa</Typography>
+        <Typography
+          style={{
+            fontSize: 16,
+            fontWeight: "bold",
+            color: "#000A47",
+          }}
+        >
+          {mesexpe && <>{mesexpe.nro_exp}</>}
         </Typography>
         <Typography
-              style={{
-                fontSize: 16,
-                fontWeight: "bold",
-                color: "#000A47",
-              }}
-            >
-              {mesexpe && <>{mesexpe.nro_exp}</>}
-        </Typography>
-        <Typography
-              style={{
-                fontSize: 11,
-                fontWeight: "bold",
-                color: "#f00A47",
-              }}
-            >
-              Caratula: {mesexpe && <>{mesexpe.caratula}</>}
+          style={{
+            fontSize: 11,
+            fontWeight: "bold",
+            color: "#f00A47",
+          }}
+        >
+          Caratula: {mesexpe && <>{mesexpe.caratula}</>}
         </Typography>
         {partes && <h4>{partes.barrio}</h4>}
-        <Button>Save</Button> 
+        <Button>Save</Button>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 450 }} aria-label="simple table">
             <TableHead>
@@ -114,34 +125,29 @@ export const SearchItemModal = ({
                 <TableCell>Nombre</TableCell>
                 <TableCell align="right">Apellido</TableCell>
                 <TableCell align="right">DNI</TableCell>
-                
               </TableRow>
             </TableHead>
             <TableBody>
               {partesexpe.map((row) => (
-              <TableRow
-                key={row.idper}
-                
-                >
-                <TableCell> {row.tipo}</TableCell> 
-                <TableCell> {row.nombre}</TableCell>
-                <TableCell> {row.apellido}</TableCell>
-                <TableCell> {row.dni}</TableCell>
-              </TableRow>
+                <TableRow key={row.idper}>
+                  <TableCell> {row.tipo}</TableCell>
+                  <TableCell> {row.nombre}</TableCell>
+                  <TableCell> {row.apellido}</TableCell>
+                  <TableCell> {row.dni}</TableCell>
+                </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
         <Typography
-              style={{
-                fontSize: 11,
-                fontWeight: "bold",
-                color: "#f00A47",
-              }}
-            >
-              {expecondenun && <>{expecondenun.idprev_digital}</>}
-              -
-              {expecondenun && <>{expecondenun.idmes_expedientes}</>}
+          style={{
+            fontSize: 11,
+            fontWeight: "bold",
+            color: "#f00A47",
+          }}
+        >
+          {expecondenun && <>{expecondenun.idprev_digital}</>}-
+          {expecondenun && <>{expecondenun.idmes_expedientes}</>}
         </Typography>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 450 }} aria-label="simple table">
@@ -150,29 +156,25 @@ export const SearchItemModal = ({
                 <TableCell>Nombre</TableCell>
                 <TableCell align="right">Apellido</TableCell>
                 <TableCell align="right">DNI</TableCell>
-                <TableCell align="right">Celular</TableCell>            
+                <TableCell align="right">Celular</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                
-              </TableRow>
+              <TableRow></TableRow>
             </TableBody>
           </Table>
         </TableContainer>
         <Typography
-              style={{
-                fontSize: 11,
-                fontWeight: "bold",
-                color: "#f00A47",
-              }}
-            >
-              {expecondenun && <>{expecondenun.idprev_digital}</>}
-              -
-              {expecondenun && <>{expecondenun.relatos_hecho}</>}
+          style={{
+            fontSize: 11,
+            fontWeight: "bold",
+            color: "#f00A47",
+          }}
+        >
+          {expecondenun && <>{expecondenun.idprev_digital}</>}-
+          {expecondenun && <>{expecondenun.relatos_hecho}</>}
         </Typography>
       </Box>
-      
     </Modal>
   );
 };

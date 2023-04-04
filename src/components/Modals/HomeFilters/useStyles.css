@@ -5,15 +5,20 @@
 }
 
 .box-button {
-    width: 95%;
+    width: 98%;
+    height: 13%;
     display: flex;
     justify-content: flex-end;
+    align-items: center;    
 }
 
 .button {
-    height: 30px;
-    width: 140px;
+    height: 40px;
+    width: 150px;
     background: #3c678b;
     border-radius: 20px;
     color: #ffff;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.01em;
 }
