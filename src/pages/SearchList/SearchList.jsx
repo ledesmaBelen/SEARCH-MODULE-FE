@@ -21,8 +21,9 @@ export const SearchList = () => {
     const value = window.location.search.split("?");
     value.shift();
     if (value) {
-      setsearchValue(value.toString().replaceAll("%20", " "));
-      let params = `${value.toString().replaceAll("%20", " ")}`;
+      let valueformat = value.toString().replaceAll("%20", " ");
+      setsearchValue(valueformat.replaceAll("%22", ""));
+      let params = `${valueformat.replaceAll("%22", '"')}`;
       if (sessionStorage.getItem("filters")) {
         const filters = JSON.parse(sessionStorage.getItem("filters"));
         const countcheckboxs = filters.checks.filter((check) => check.check);
