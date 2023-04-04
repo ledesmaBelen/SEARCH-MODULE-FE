@@ -61,6 +61,8 @@ export const Header = ({
             alt="Lamp"
             width="120"
             height="60"
+            onClick={() => navigate("/home")}
+            style={{ cursor: "pointer" }}
           ></img>
         </Grid>
         <Grid

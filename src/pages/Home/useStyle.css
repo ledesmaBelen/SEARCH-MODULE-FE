@@ -10,7 +10,7 @@
 
 .background-blue {
     background-image: url("../../assets/cielo.jpg");
-    background-repeat: no-repeat;
+    background-repeat:repeat;
     height: 40%;
     width: 100%;
 }
