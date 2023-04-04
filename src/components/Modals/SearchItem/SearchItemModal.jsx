@@ -34,6 +34,7 @@ export const SearchItemModal = ({
   const [mesexpe, setMesexpe] = useState(null);
   const [partesexpe, setPartesexpe] = useState([]);
   const [expecondenun, setExpecondenun] = useState(null);
+  const [searchValue, setsearchValue] = useState("");
 
   const getItem = async () => {
     const result = await handleGetItemDetails(item.cabezeraDerDato);
@@ -56,9 +57,20 @@ export const SearchItemModal = ({
     console.log(result1);
     if (result1) setPartes(result1.return[0]);
   };
-
+  const handleGetParams = async () => {
+    const value = window.location.search.split("?");
+    value.shift();
+    console.log(value);
+    if (value) {
+      let valueformat = value.toString().replaceAll("%20", " ");
+      setsearchValue(valueformat.replaceAll("%22", '"'));
+    }
+  };
   useEffect(() => {
-    if (openModalSearchItem) getItem();
+    if (openModalSearchItem) {
+      handleGetParams();
+      getItem();
+    }
   }, [openModalSearchItem]);
 
   return (
