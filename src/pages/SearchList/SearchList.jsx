@@ -42,27 +42,9 @@ export const SearchList = () => {
         if (filters.hasta) params += `&hasta=${filters.hasta.split("T")[0]}`;
       }
 
-      //const result = await search(params, type);
-      setcards([
-        {
-          idexpelong: null,
-          abajoTituloDelito:
-            "/home/repositorio/pdf/archivos_firmados//home/repositorio/pdf/archivos_firmados",
-          fecha1: "__/__/__",
-          abajoPreventivo: null,
-          abajoPersonLegajo: null,
-          textoMedio: "Palabra encontrada , posicion 438",
-          abajoRJ: null,
-          cabezeraDerTit: "PDF",
-          cabezeraDerDato: null,
-          cabezeraIzq:
-            "ARCHIVO : 5de580fdf3464-OFICIO ABUSO FEMENINO AYLEN URBINA .pdf",
-          sectoTitulo: "//unidad//pdf//includes//archivos_firmados",
-          abajoPersonDenuncia: null,
-          abajoSecuestros: null,
-        },
-      ]);
-      // if (result) setcards(result);
+      const result = await search(params, type);
+
+      if (result) setcards(result);
     }
 
     setloading(false);
