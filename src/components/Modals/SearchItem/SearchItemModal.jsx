@@ -1,17 +1,12 @@
-import {
-  Box,
-  Modal,
-  Typography,
-  Button,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Box, Modal, Typography, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { handleGetItemDetails } from "../../../services/Search";
 import { handleGetPartes } from "../../../services/Search";
 import { handleGetMesExpeDetails } from "../../../services/Search";
 import { handleGetMesExpePersons } from "../../../services/Search";
 import { handleGetExpeconDenun } from "../../../services/Search";
+import { handleGetSecuestros } from "../../../services/Search";
+import { handleGetCriterios } from "../../../services/Search";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -20,9 +15,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import CloseIcon from "@mui/icons-material/Close";
-import ShareIcon from "@mui/icons-material/Share";
-import PrintIcon from "@mui/icons-material/Print";
 
 export const SearchItemModal = ({
   item,
@@ -34,43 +26,80 @@ export const SearchItemModal = ({
   const [mesexpe, setMesexpe] = useState(null);
   const [partesexpe, setPartesexpe] = useState([]);
   const [expecondenun, setExpecondenun] = useState(null);
-  const [searchValue, setsearchValue] = useState("");
+  const [secuestro, setSecuestro] = useState([]);
+  const [criterio, setCriterio] = useState();
 
   const getItem = async () => {
-    const result = await handleGetItemDetails(item.cabezeraDerDato);
+    const result = await handleGetItemDetails(item.idexpelong);
     console.log(result);
     if (result) setDetails(result.return[0]);
 
-    const result2 = await handleGetMesExpeDetails(item.cabezeraDerDato);
-    console.log(result2);
+    const result2 = await handleGetMesExpeDetails(item.idexpelong);
+    // console.log(result2);
     if (result2) setMesexpe(result2[0]);
 
-    const result3 = await handleGetMesExpePersons(item.cabezeraDerDato);
-    console.log(result3);
+    const result3 = await handleGetMesExpePersons(item.idexpelong);
+    // console.log(result3);
     if (result3) setPartesexpe(result3);
 
-    const result4 = await handleGetExpeconDenun(item.cabezeraDerDato);
-    console.log(result4);
+    const result4 = await handleGetExpeconDenun(item.idexpelong);
+    // console.log(result4);
     if (result4) setExpecondenun(result4[0]);
 
-    const result1 = await handleGetPartes(item.cabezeraDerDato);
-    console.log(result1);
+    const result1 = await handleGetPartes(item.idexpelong);
+    // console.log(result1);
     if (result1) setPartes(result1.return[0]);
+
+    const result5 = await handleGetSecuestros(item.idexpelong);
+    // console.log(result5);
+    if (result5) setSecuestro(result5);
+
+    const result6 = await handleGetCriterios();
+    console.log(result6);
+    if (result6) setCriterio(result6);
   };
-  const handleGetParams = async () => {
-    const value = window.location.search.split("?");
-    value.shift();
-    console.log(value);
-    if (value) {
-      let valueformat = value.toString().replaceAll("%20", " ");
-      setsearchValue(valueformat.replaceAll("%22", '"'));
+
+  const colorSearchValue = (text) => {
+    if (criterio) {
+      //const lstmarcar = ["alberto","nataly"];
+      //const lstmarcar = ["alberto"];
+      //  if (message) {
+      // lstmarcar.map(elemento => {
+      const arreglobus = criterio.split(" ");
+      //const elemento = "alberto";
+      console.log(arreglobus);
+
+      //});
+      //      for ( let i=0 ; i < 2 ; i++){
+      //        console.log(i);
+      const message = arreglobus[0].replaceAll('"', "");
+      console.log(message);
+      const index = text.toLowerCase().search(message.toLocaleLowerCase());
+      console.log(index);
+      const textfilter = text.slice(index);
+      console.log(textfilter);
+      const lengthSearch = message.length;
+      console.log(lengthSearch, textfilter.slice(lengthSearch));
+      return (
+        <td>
+          {text.slice(0, index)}
+
+          <span style={{ background: "#757b7d", color: "#f2f2f2" }}>
+            {text.slice(index, index + lengthSearch)}
+          </span>
+
+          {text.slice(index + lengthSearch)}
+        </td>
+      );
+      // });
+
+      //}
     }
+    return text;
   };
+
   useEffect(() => {
-    if (openModalSearchItem) {
-      handleGetParams();
-      getItem();
-    }
+    if (openModalSearchItem) getItem();
   }, [openModalSearchItem]);
 
   return (
@@ -82,7 +111,7 @@ export const SearchItemModal = ({
       <Box
         sx={{
           width: "70%",
-          height: 550,
+          height: 500,
           borderRadius: 3,
           bgcolor: "#f5f7fb",
           border: "2px solid #3d688c",
@@ -99,44 +128,12 @@ export const SearchItemModal = ({
           fontFamily: "Courier New",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <CloseIcon
-            sx={{ cursor: "pointer" }}
-            onClick={() => setopenModalSearchItem(false)}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <img
-            src="https://mpajujuy.gob.ar/images/imgFootLogo.png"
-            alt="Lamp"
-            width="232"
-            height="132"
-          ></img>
-          <div>
-            <Tooltip title="Compartir">
-              <IconButton>
-                <ShareIcon style={{ fontSize: 40, paddingRight: 10 }} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Imprimir">
-              <IconButton>
-                <PrintIcon style={{ fontSize: 40 }} />
-              </IconButton>
-            </Tooltip>
-          </div>
-        </div>
-
+        <img
+          src="https://mpajujuy.gob.ar/images/imgFootLogo.png"
+          alt="Lamp"
+          width="232"
+          height="132"
+        ></img>
         {mesexpe && <h3> fav ID:{mesexpe.idmes_expedientes}</h3>}
         <Typography>Modelo de Certificación de Causa</Typography>
         <Typography
@@ -152,10 +149,10 @@ export const SearchItemModal = ({
           style={{
             fontSize: 11,
             fontWeight: "bold",
-            color: "#f00A47",
+            color: "#00bfff",
           }}
         >
-          Caratula: {mesexpe && <>{mesexpe.caratula}</>}
+          Caratula: {mesexpe && <> {colorSearchValue(mesexpe.caratula)}</>}
         </Typography>
         {partes && <h4>{partes.barrio}</h4>}
         <Button>Save</Button>
@@ -173,7 +170,7 @@ export const SearchItemModal = ({
               {partesexpe.map((row) => (
                 <TableRow key={row.idper}>
                   <TableCell> {row.tipo}</TableCell>
-                  <TableCell> {row.nombre}</TableCell>
+                  <TableCell> {colorSearchValue(row.nombre)}</TableCell>
                   <TableCell> {row.apellido}</TableCell>
                   <TableCell> {row.dni}</TableCell>
                 </TableRow>
@@ -214,8 +211,24 @@ export const SearchItemModal = ({
           }}
         >
           {expecondenun && <>{expecondenun.idprev_digital}</>}-
-          {expecondenun && <>{expecondenun.relatos_hecho}</>}
+          {expecondenun && <>{colorSearchValue(expecondenun.relatos_hecho)}</>}
         </Typography>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 450 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Detalle Secuestro</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {secuestro.map((row) => (
+                <TableRow key={row.secu}>
+                  <TableCell> {row.secu}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </Modal>
   );

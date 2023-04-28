@@ -1,8 +1,9 @@
-
 .title {
     /* font-family:'Courier New', Courier, monospace; */
     font-weight: bold;
-    color: #4E4A47;
+    color: #4e4a47;
+    min-width: 60%;
+    max-width: 80%;
 }
 
 .box-cards {
@@ -10,7 +11,7 @@
 }
 
 .box-search-body {
-    overflow-y:scroll;
+    overflow-y: scroll;
     height: calc(98vh - 60px);
 }
 
@@ -20,4 +21,39 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/**/
+.filter-boxMenuFilter {
+    color: #028b7e;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+
+
+.filter-boxFormControl {
+    display: flex;
+    align-items: center;
+}
+
+.filter-buttonResetFilter {
+    height: 30px;
+    width: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f2f2f2;
+    cursor: pointer;
+    border: 2px solid #1b2f6a;
+    border-radius: 23px;
+    /* &:hover: {
+      backgroundColor: #fff
+    } */
+}
+
+.filter-typographyButton {
+    color: #1b2f6a
 }

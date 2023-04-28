@@ -4,9 +4,14 @@ import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined
 import SearchIcon from "@mui/icons-material/Search";
 import "./useStyles.css";
 import { SearchItemModal } from "../../Modals/SearchItem/SearchItemModal";
+import { ModalPDF } from "./PDF/ModalPDF";
+import SaveAltIcon from "@mui/icons-material/SaveAlt";
+import logopdf from "../../../assets/icon_pdf.png";
+import bigIconPDF from "../../../assets/icon_pdf_big.png";
 
 export const Card = ({ item, setcardsSidebar }) => {
   const [openModalSearchItem, setopenModalSearchItem] = useState(false);
+  const [openModalPDF, setopenModalPDF] = useState(false);
 
   const handleSetExp = (item) => {
     const cardsSelected = sessionStorage.getItem("cards")
@@ -22,9 +27,16 @@ export const Card = ({ item, setcardsSidebar }) => {
       setcardsSidebar(cardsSelected);
     }
   };
+
   const getDate = (date) => {
     const fecha = date.split(" ");
     return fecha.length > 0 ? fecha[0] : "";
+  };
+
+  const openItem = () => {
+    item.cabezeraDerTit === "PDF"
+      ? setopenModalPDF(true)
+      : setopenModalSearchItem(true);
   };
   return (
     <>
@@ -35,29 +47,48 @@ export const Card = ({ item, setcardsSidebar }) => {
           >
             {item.cabezeraDerTit} NRO: {item.cabezeraDerDato}
           </Typography>
-          <Typography
-            style={{ fontSize: 14, fontWeight: "bold", color: "#4E4A47" }}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
           >
-            {item.cabezeraIzq}
+            <Typography
+              style={{ fontSize: 14, fontWeight: "bold", color: "#4E4A47" }}
+            >
+              {item.cabezeraIzq}
+            </Typography>
+            {item.cabezeraDerTit === "PDF" && (
+              <img
+                src={bigIconPDF}
+                alt="PDF"
+                height={40}
+                width={52}
+                onClick={() => openItem()}
+              />
+            )}
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            style={{
+              fontSize: 20,
+              textDecoration: "underline",
+              fontWeight: "bold",
+              color: "#1b2f6a",
+              maxWidth: "90%",
+            }}
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+            onClick={() => openItem()}
+          >
+            {item.sectoTitulo}
           </Typography>
         </div>
 
-        <Typography
-          style={{
-            fontSize: 20,
-            textDecoration: "underline",
-            fontWeight: "bold",
-            color: "#1b2f6a",
-          }}
-          sx={{
-            "&:hover": {
-              cursor: "pointer",
-            },
-          }}
-          onClick={() => setopenModalSearchItem(true)}
-        >
-          {item.sectoTitulo}
-        </Typography>
         <div className="box-medium-card">
           <Typography
             style={{ fontWeight: "bold", fontSize: 12, color: "#4E4A47" }}
@@ -77,18 +108,7 @@ export const Card = ({ item, setcardsSidebar }) => {
                 fontSize: 13,
                 fontWeight: "bold",
                 color: "#4E4A47",
-                width: "8%",
-              }}
-            >
-              R.J: <span style={{ color: "#2FA83F" }}>{item.abajoRJ}</span>
-            </p>
-            <p
-              style={{
-                fontSize: 13,
-                fontWeight: "bold",
-                color: "#4E4A47",
-                paddingLeft: "10px",
-                width: "15%",
+                maxWidth: "15%",
               }}
             >
               Preventivo (
@@ -100,10 +120,10 @@ export const Card = ({ item, setcardsSidebar }) => {
             <p
               style={{
                 fontSize: 13,
-                paddingLeft: "10px",
                 fontWeight: "bold",
                 color: "#4E4A47",
-                width: "10%",
+                maxWidth: "10%",
+                paddingLeft: 10,
               }}
             >
               Parte(
@@ -116,10 +136,10 @@ export const Card = ({ item, setcardsSidebar }) => {
             <p
               style={{
                 fontSize: 13,
-                paddingLeft: "10px",
                 fontWeight: "bold",
                 color: "#4E4A47",
-                width: "15%",
+                maxWidth: "15%",
+                paddingLeft: 10,
               }}
             >
               Secuestros (
@@ -130,8 +150,8 @@ export const Card = ({ item, setcardsSidebar }) => {
             </p>
             <div
               style={{
-                paddingLeft: "10px",
-                width: "45%",
+                maxWidth: "60%",
+                paddingLeft: 10,
               }}
             >
               <Tooltip title={item.abajoTituloDelito}>
@@ -151,12 +171,7 @@ export const Card = ({ item, setcardsSidebar }) => {
               </Tooltip>
             </div>
           </div>
-          <div>
-            <Tooltip title={`Ver ${item.cabezeraIzq}`}>
-              <IconButton onClick={() => setopenModalSearchItem(true)}>
-                <SearchIcon />
-              </IconButton>
-            </Tooltip>
+          <div style={{ paddingRight: 8 }}>
             <Tooltip title="Guardar">
               <IconButton onClick={() => handleSetExp(item)}>
                 <BookmarkAddedOutlinedIcon />
@@ -170,6 +185,13 @@ export const Card = ({ item, setcardsSidebar }) => {
         item={item}
         openModalSearchItem={openModalSearchItem}
         setopenModalSearchItem={setopenModalSearchItem}
+      />
+      <ModalPDF
+        url={item.abajoTituloDelito + item.cabezeraIzq}
+        openModalPDF={openModalPDF}
+        setopenModalPDF={setopenModalPDF}
+        setcardsSidebar={setcardsSidebar}
+        item={item}
       />
     </>
   );

@@ -10,9 +10,10 @@
 
 .background-blue {
     background-image: url("../../assets/cielo.jpg");
-    background-repeat:repeat;
+    /* background-repeat:no-repeat; */
     height: 40%;
     width: 100%;
+
 }
 
 .box-options {

@@ -6,6 +6,9 @@ import { search } from "../../services/Search";
 import { Cards } from "./Cards";
 import "./useStyles.css";
 import { SearchItemModal } from "../../components/Modals/SearchItem/SearchItemModal";
+import MenuSearchFilters from "./MenuFilterTypes";
+import { listToMenuSearchFilters } from "../../utils/Types";
+import { ModalPDF } from "../../components/SearchList/Card/PDF/ModalPDF";
 
 export const SearchList = () => {
   const [searchValue, setsearchValue] = useState("");
@@ -15,6 +18,9 @@ export const SearchList = () => {
   const [openModalGavel, setopenModalGavel] = useState(false);
   const [searchItem, setsearchItem] = useState(null);
   const [openModalSearchItem, setopenModalSearchItem] = useState(false);
+  const [type, settype] = useState(
+    listToMenuSearchFilters.find((button) => button.default).code
+  );
 
   const handleGetParams = async () => {
     setloading(true);
@@ -34,11 +40,29 @@ export const SearchList = () => {
         }
         if (filters.desde) params += `&desde=${filters.desde.split("T")[0]}`;
         if (filters.hasta) params += `&hasta=${filters.hasta.split("T")[0]}`;
-
-        console.log(params);
       }
-      const result = await search(params);
-      if (result) setcards(result);
+
+      //const result = await search(params, type);
+      setcards([
+        {
+          idexpelong: null,
+          abajoTituloDelito:
+            "/home/repositorio/pdf/archivos_firmados//home/repositorio/pdf/archivos_firmados",
+          fecha1: "__/__/__",
+          abajoPreventivo: null,
+          abajoPersonLegajo: null,
+          textoMedio: "Palabra encontrada , posicion 438",
+          abajoRJ: null,
+          cabezeraDerTit: "PDF",
+          cabezeraDerDato: null,
+          cabezeraIzq:
+            "ARCHIVO : 5de580fdf3464-OFICIO ABUSO FEMENINO AYLEN URBINA .pdf",
+          sectoTitulo: "//unidad//pdf//includes//archivos_firmados",
+          abajoPersonDenuncia: null,
+          abajoSecuestros: null,
+        },
+      ]);
+      // if (result) setcards(result);
     }
 
     setloading(false);
@@ -49,11 +73,12 @@ export const SearchList = () => {
     if (sessionStorage.getItem("cards")) {
       setcardsSidebar(JSON.parse(sessionStorage.getItem("cards")));
     }
-  }, []);
+  }, [type]);
 
   const handleSidebarToggle = () => {
     setopenModalGavel(!openModalGavel);
   };
+  const [openModalPDF, setopenModalPDF] = useState(false);
 
   return (
     <div style={{ overflow: "hidden" }}>
@@ -64,13 +89,27 @@ export const SearchList = () => {
         cardsSidebar={cardsSidebar}
       />
       <div className="box-search-body">
-        <Typography
-          className="title"
-          style={{ fontSize: "25px", marginLeft: "2%", marginTop: "1%" }}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: "1%",
+            marginLeft: "2%",
+          }}
         >
-          Resultados de la busqueda "{searchValue}"{" "}
-          {cards.length > 0 ? `(${cards.length} resultados)` : ""}
-        </Typography>
+          <Typography
+            className="title"
+            style={{
+              fontSize: 25,
+              paddingRight: 20,
+            }}
+          >
+            Resultados de la busqueda "{searchValue}"{" "}
+            {cards.length > 0 ? `(${cards.length} resultados)` : ""}
+          </Typography>
+          <MenuSearchFilters type={type} settype={settype} />
+        </div>
+
         <Cards
           loading={loading}
           cards={cards}
@@ -89,6 +128,11 @@ export const SearchList = () => {
         item={searchItem}
         openModalSearchItem={openModalSearchItem}
         setopenModalSearchItem={setopenModalSearchItem}
+      />
+      <ModalPDF
+        url={"/src/assets/pdf.pdf"}
+        openModalPDF={openModalPDF}
+        setopenModalPDF={setopenModalPDF}
       />
     </div>
   );

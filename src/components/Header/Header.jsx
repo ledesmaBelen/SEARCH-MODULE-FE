@@ -1,10 +1,8 @@
-import { Badge, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import TuneIcon from "@mui/icons-material/Tune";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import GavelIcon from "@mui/icons-material/Gavel";
 import { Avatar } from "@mui/material";
 import "./useStyles.css";
 import { useNavigate } from "react-router-dom";

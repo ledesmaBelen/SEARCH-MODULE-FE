@@ -1,9 +1,10 @@
 import axios from "axios";
 
-export const search = async (value) => {
+export const search = async (value, type) => {
   try {
     const response = await axios.get(
-      `http://168.181.186.118:9093/search/fseach2/${value}`
+      //`http://168.181.186.118:9093/search/fseach2/${value}`168.181.186.118:9093/search/fseach2/almazan%20pilar?tipobusqueda=dbpdf
+      `http://168.181.186.118:9093/search/fseach2/${value}?tipobusqueda=${type}`
     );
     return response.data;
   } catch (error) {
@@ -22,8 +23,6 @@ export const handleGetItemDetails = async (legajoId) => {
     console.log(error);
   }
 };
-
-
 
 export const handleGetMesExpeDetails = async (legajoId) => {
   try {
@@ -49,16 +48,15 @@ export const handleGetMesExpePersons = async (legajoId) => {
   }
 };
 
-  export const handleGetPartes = async (legajoId) => {
-    try {
-      const response = await axios.get(
-        `http://168.181.186.118:9093/mpasearch/getPartesExpe/${legajoId}`
-        
-      );
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }    
+export const handleGetPartes = async (legajoId) => {
+  try {
+    const response = await axios.get(
+      `http://168.181.186.118:9093/mpasearch/getPartesExpe/${legajoId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const handleGetExpeconDenun = async (legajoId) => {
@@ -70,6 +68,29 @@ export const handleGetExpeconDenun = async (legajoId) => {
     return response.data;
   } catch (error) {
     console.log(error);
-  }    
+  }
 };
 
+export const handleGetSecuestros = async (legajoId) => {
+  try {
+    const response = await axios.get(
+      `http://168.181.186.118:9093/mpasearch/getsecuestros/${legajoId}`
+      //`http://localhost:9090/mpasearch/getsecuestros/${legajoId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const handleGetCriterios = async (legajoId) => {
+  try {
+    const response = await axios.get(
+      `http://168.181.186.118:9093/mpasearch/criteriobus`
+      //`http://localhost:9090/mpasearch/criteriobus`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
