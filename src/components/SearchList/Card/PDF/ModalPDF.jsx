@@ -1,5 +1,5 @@
 import { Box, IconButton, Modal, Tooltip } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined";
 
@@ -10,9 +10,11 @@ export function ModalPDF({
   setcardsSidebar,
   item,
 }) {
+  const [urlPdf, seturlPdf] = useState(url);
   const toggleModal = () => {
     setopenModalPDF(!openModalPDF);
   };
+
   const handleSetExp = (item) => {
     const cardsSelected = sessionStorage.getItem("cards")
       ? JSON.parse(sessionStorage.getItem("cards"))
@@ -27,6 +29,24 @@ export function ModalPDF({
       setcardsSidebar(cardsSelected);
     }
   };
+  const getPDF = async () => {
+    console.log(url);
+    fetch(`http://168.181.186.118:9093/pdf/enviarpdf?filepdf=${url}`, {
+      method: "POST",
+    })
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => {
+        const blob = new Blob([buffer], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+        console.log(url);
+        seturlPdf(url);
+      })
+      .catch((error) => console.error(error));
+  };
+  useEffect(() => {
+    getPDF();
+  }, []);
+
   return (
     <Modal open={openModalPDF} onClose={toggleModal} disableAutoFocus>
       <Box
@@ -62,7 +82,7 @@ export function ModalPDF({
 
           <CloseIcon style={{ cursor: "pointer" }} onClick={toggleModal} />
         </div>
-        <embed src={url} type="application/pdf" width="100%" height="90%" />
+        <embed src={urlPdf} type="application/pdf" width="100%" height="90%" />
       </Box>
     </Modal>
   );

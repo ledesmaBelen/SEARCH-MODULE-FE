@@ -186,13 +186,15 @@ export const Card = ({ item, setcardsSidebar }) => {
         openModalSearchItem={openModalSearchItem}
         setopenModalSearchItem={setopenModalSearchItem}
       />
-      <ModalPDF
-        url={item.abajoTituloDelito + item.cabezeraIzq}
-        openModalPDF={openModalPDF}
-        setopenModalPDF={setopenModalPDF}
-        setcardsSidebar={setcardsSidebar}
-        item={item}
-      />
+      {item.cabezeraDerTit === "PDF" && (
+        <ModalPDF
+          url={item.sectoTitulo}
+          openModalPDF={openModalPDF}
+          setopenModalPDF={setopenModalPDF}
+          setcardsSidebar={setcardsSidebar}
+          item={item}
+        />
+      )}
     </>
   );
 };

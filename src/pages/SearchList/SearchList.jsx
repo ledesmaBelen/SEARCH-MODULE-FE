@@ -43,7 +43,6 @@ export const SearchList = () => {
       }
 
       const result = await search(params, type);
-
       if (result) setcards(result);
     }
 
