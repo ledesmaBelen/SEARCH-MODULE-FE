@@ -77,11 +77,14 @@ export const HomeFiltersModal = ({
       if (filters.hasta) sethasta(new Date(filters.hasta));
       if (filters.valueRadioButtons)
         setvalueRadioButtons(filters.valueRadioButtons);
-      const checkboxs = filters.checks.filter((check) => check.check);
-      if (checkboxs && checkboxs.length > 0) {
-        setChecks(filters.checks);
-        count += checkboxs.length;
+      if (filters.checks) {
+        const checkboxs = filters.checks.filter((check) => check.check);
+        if (checkboxs && checkboxs.length > 0) {
+          setChecks(filters.checks);
+          count += checkboxs.length;
+        }
       }
+
       if (filters.desde || filters.hasta) count += 1;
       if (filters.valueRadioButtonsType)
         setvalueRadioButtonsType(filters.valueRadioButtonsType);

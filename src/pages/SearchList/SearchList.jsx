@@ -39,29 +39,31 @@ export const SearchList = () => {
       let queryparams = "";
       if (sessionStorage.getItem("filters")) {
         const filters = JSON.parse(sessionStorage.getItem("filters"));
-        const countcheckboxs = filters.checks.filter((check) => check.check);
-        if (countcheckboxs.length > 0 && filters.checks.length > 0) {
-          filters.checks.map((check) => {
-            queryparams += `&${check.value}=${check.check ? 1 : 0}`;
-          });
+        if (filters.checks) {
+          const countcheckboxs = filters.checks.filter((check) => check.check);
+          if (countcheckboxs.length > 0 && filters.checks.length > 0) {
+            filters.checks.map((check) => {
+              queryparams += `&${check.value}=${check.check ? 1 : 0}`;
+            });
+          }
         }
         if (filters.desde)
           queryparams += `&desde=${filters.desde.split("T")[0]}`;
         if (filters.hasta)
           queryparams += `&hasta=${filters.hasta.split("T")[0]}`;
-
+        if (filters.valueRadioButtonsType) {
+          queryparams += `tipobusqueda=${filters.valueRadioButtonsType}`;
+          setsearchType(filters.valueRadioButtonsType);
+          console.log(queryparams);
+        }
+      } else {
         queryparams += `tipobusqueda=${
-          filters.valueRadioButtonsType ||
           listToMenuSearchFilters.find((button) => button.default).code
         }`;
         setsearchType(
-          filters.valueRadioButtonsType ||
-            listToMenuSearchFilters.find((button) => button.default).code
+          listToMenuSearchFilters.find((button) => button.default).code
         );
-
-        console.log(queryparams);
       }
-
       const result = await search(value, queryparams);
       if (result) setcards(result);
     }
@@ -82,9 +84,17 @@ export const SearchList = () => {
 
   const handleChangeRadioButtonsTypeDocument = (e) => {
     setsearchType(e.target.value);
-    const obj = JSON.parse(sessionStorage.getItem("filters"));
-    obj.valueRadioButtonsType = e.target.value;
-    sessionStorage.setItem("filters", JSON.stringify(obj));
+    if (sessionStorage.getItem("filters")) {
+      const obj = JSON.parse(sessionStorage.getItem("filters"));
+      obj.valueRadioButtonsType = e.target.value;
+      sessionStorage.setItem("filters", JSON.stringify(obj));
+    } else {
+      sessionStorage.setItem(
+        "filters",
+        JSON.stringify({ valueRadioButtonsType: e.target.value })
+      );
+    }
+
     handleGetParams();
   };
 

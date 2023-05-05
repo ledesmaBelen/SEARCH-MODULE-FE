@@ -22,12 +22,20 @@ export const BadgeFilters = ({
     if (sessionStorage.getItem("filters")) {
       const filters = JSON.parse(sessionStorage.getItem("filters"));
       let count = 0;
-      console.log(filters);
       if (filters.desde || filters.hasta) count += 1;
+
       const defaultvalue = radioButtons.find((button) => button.default);
-      if (filters.valueRadioButtons !== defaultvalue.value) count += 1;
-      const checkboxs = filters.checks.filter((check) => check.check);
-      if (checkboxs && checkboxs.length > 0) count += checkboxs.length;
+      if (
+        filters.valueRadioButtons &&
+        filters.valueRadioButtons !== defaultvalue.value
+      )
+        count += 1;
+
+      if (filters.checks) {
+        const checkboxs = filters.checks.filter((check) => check.check);
+        if (checkboxs && checkboxs.length > 0) count += checkboxs.length;
+      }
+
       setcontentBadgeFilters(count);
     }
   }, []);
