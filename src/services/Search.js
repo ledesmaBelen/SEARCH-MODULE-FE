@@ -1,13 +1,9 @@
 import axios from "axios";
 
-export const search = async (value, type = null) => {
+export const search = async (value, params) => {
   try {
-    let url = `http://168.181.186.118:9093/search/fseach2/${value}`;
-    if (type) url += `?tipobusqueda=${type}`;
-    const response = await axios.get(
-      //`http://168.181.186.118:9093/search/fseach2/${value}`168.181.186.118:9093/search/fseach2/almazan%20pilar?tipobusqueda=dbpdf
-      url
-    );
+    let url = `http://168.181.186.118:9093/search/fseach2/${value}?${params}`;
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     console.log(error);

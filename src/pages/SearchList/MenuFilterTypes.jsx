@@ -11,8 +11,9 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useState } from "react";
 import { listToMenuSearchFilters } from "../../utils/Types";
+import { useNavigate } from "react-router-dom";
 
-export default function MenuSearchFilters({ type, settype }) {
+export default function MenuSearchFilters({ type, value }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -35,7 +36,7 @@ export default function MenuSearchFilters({ type, settype }) {
               fontSize: "1rem",
             }}
           >
-            Filtros
+            Buscar en
           </Typography>
           <ArrowDropDownIcon sx={{ fontSize: "1rem", color: "#1b2f6a" }} />
         </button>
@@ -46,15 +47,18 @@ export default function MenuSearchFilters({ type, settype }) {
         open={open}
         onClose={handleClose}
       >
-        <FiltersList type={type} settype={settype} />
+        <FiltersList type={type} value={value} />
       </Menu>
     </>
   );
 }
 
-function FiltersList({ type, settype }) {
+function FiltersList({ type, value }) {
+  const navigate = useNavigate();
+
   const handleChangeRadioButtons = (e) => {
-    settype(e.target.value);
+    navigate(`/search?value=${value}&type=${e.target.value}`);
+    window.location.reload();
   };
 
   return listToMenuSearchFilters && listToMenuSearchFilters.length > 0 ? (

@@ -10,6 +10,7 @@ import { ModalConfig } from "../Modals/ModalConfig/ModalConfig";
 import { BadgeFilters } from "../Badges/BadgeFilters/BadgeFilters";
 import { BadgeGavel } from "../Badges/BadgeGavel/BadgeGavel";
 import { HomeFiltersModal } from "../Modals/HomeFilters/HomeFiltersModal";
+import { listToMenuSearchFilters } from "../../utils/Types";
 
 export const Header = ({
   searchValue,
@@ -33,7 +34,11 @@ export const Header = ({
 
   const handleSearchValue = (event) => {
     if (event.key === "Enter") {
-      navigate(`/search?${valueInput}`);
+      navigate(
+        `/search?value=${valueInput}&type=${
+          listToMenuSearchFilters.find((type) => type.default).code
+        }`
+      );
       window.location.reload();
     }
   };
@@ -80,7 +85,7 @@ export const Header = ({
                 },
               }}
               onClick={() => {
-                navigate(`/search?${valueInput}`);
+                navigate(`/search?value=${valueInput}`);
                 window.location.reload();
               }}
             />
@@ -104,7 +109,6 @@ export const Header = ({
             className="icons"
             style={{ fontSize: "30px", cursor: "pointer" }}
             onClick={() => {
-              onClose();
               setopenModalConfig(true);
             }}
           />

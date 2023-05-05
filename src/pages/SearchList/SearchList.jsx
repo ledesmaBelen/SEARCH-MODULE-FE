@@ -1,4 +1,10 @@
-import { Typography } from "@mui/material";
+import {
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import GavelSidebar from "../../components/Modals/HomeGavel/SidebarCardsRight";
@@ -8,9 +14,11 @@ import "./useStyles.css";
 import { SearchItemModal } from "../../components/Modals/SearchItem/SearchItemModal";
 import MenuSearchFilters from "./MenuFilterTypes";
 import { listToMenuSearchFilters } from "../../utils/Types";
-import { ModalPDF } from "../../components/SearchList/Card/PDF/ModalPDF";
+import { useLocation } from "react-router-dom";
 
 export const SearchList = () => {
+  const location = useLocation();
+
   const [searchValue, setsearchValue] = useState("");
   const [cards, setcards] = useState([]);
   const [cardsSidebar, setcardsSidebar] = useState([]);
@@ -18,31 +26,43 @@ export const SearchList = () => {
   const [openModalGavel, setopenModalGavel] = useState(false);
   const [searchItem, setsearchItem] = useState(null);
   const [openModalSearchItem, setopenModalSearchItem] = useState(false);
-  const [type, settype] = useState(
-    listToMenuSearchFilters.find((button) => button.default).code
-  );
+  const [searchType, setsearchType] = useState(null);
 
   const handleGetParams = async () => {
     setloading(true);
-    const value = window.location.search.split("?");
-    value.shift();
+
+    const params = new URLSearchParams(location.search);
+    const value = params.get("value");
+
     if (value) {
-      let valueformat = value.toString().replaceAll("%20", " ");
-      setsearchValue(valueformat.replaceAll("%22", ""));
-      let params = `${valueformat.replaceAll("%22", '"')}`;
+      setsearchValue(value);
+      let queryparams = "";
       if (sessionStorage.getItem("filters")) {
         const filters = JSON.parse(sessionStorage.getItem("filters"));
         const countcheckboxs = filters.checks.filter((check) => check.check);
         if (countcheckboxs.length > 0 && filters.checks.length > 0) {
           filters.checks.map((check) => {
-            params += `&${check.value}=${check.check ? 1 : 0}`;
+            queryparams += `&${check.value}=${check.check ? 1 : 0}`;
           });
         }
-        if (filters.desde) params += `&desde=${filters.desde.split("T")[0]}`;
-        if (filters.hasta) params += `&hasta=${filters.hasta.split("T")[0]}`;
+        if (filters.desde)
+          queryparams += `&desde=${filters.desde.split("T")[0]}`;
+        if (filters.hasta)
+          queryparams += `&hasta=${filters.hasta.split("T")[0]}`;
+
+        queryparams += `tipobusqueda=${
+          filters.valueRadioButtonsType ||
+          listToMenuSearchFilters.find((button) => button.default).code
+        }`;
+        setsearchType(
+          filters.valueRadioButtonsType ||
+            listToMenuSearchFilters.find((button) => button.default).code
+        );
+
+        console.log(queryparams);
       }
 
-      const result = await search(params, type);
+      const result = await search(value, queryparams);
       if (result) setcards(result);
     }
 
@@ -54,12 +74,19 @@ export const SearchList = () => {
     if (sessionStorage.getItem("cards")) {
       setcardsSidebar(JSON.parse(sessionStorage.getItem("cards")));
     }
-  }, [type]);
+  }, []);
 
   const handleSidebarToggle = () => {
     setopenModalGavel(!openModalGavel);
   };
-  const [openModalPDF, setopenModalPDF] = useState(false);
+
+  const handleChangeRadioButtonsTypeDocument = (e) => {
+    setsearchType(e.target.value);
+    const obj = JSON.parse(sessionStorage.getItem("filters"));
+    obj.valueRadioButtonsType = e.target.value;
+    sessionStorage.setItem("filters", JSON.stringify(obj));
+    handleGetParams();
+  };
 
   return (
     <div style={{ overflow: "hidden" }}>
@@ -72,9 +99,54 @@ export const SearchList = () => {
       <div className="box-search-body">
         <div
           style={{
+            width: "70%",
             display: "flex",
             alignItems: "center",
+            justifyContent: "flex-end",
             marginTop: "1%",
+            marginLeft: "2%",
+          }}
+        >
+          <FormControl
+            style={{
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            <RadioGroup
+              value={searchType}
+              onChange={handleChangeRadioButtonsTypeDocument}
+            >
+              <div style={{ display: "flex" }}>
+                {listToMenuSearchFilters.map((item) => (
+                  <FormControlLabel
+                    key={item.code}
+                    value={item.code}
+                    control={
+                      <Radio size="small" style={{ color: "#3c678b" }} />
+                    }
+                    label={
+                      <Typography
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "1rem",
+                          color: "#4e4a47",
+                        }}
+                      >
+                        {item.name}
+                      </Typography>
+                    }
+                    style={{ height: 32 }}
+                  />
+                ))}
+              </div>
+            </RadioGroup>
+          </FormControl>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
             marginLeft: "2%",
           }}
         >
@@ -88,7 +160,6 @@ export const SearchList = () => {
             Resultados de la busqueda "{searchValue}"{" "}
             {cards.length > 0 ? `(${cards.length} resultados)` : ""}
           </Typography>
-          <MenuSearchFilters type={type} settype={settype} />
         </div>
 
         <Cards
@@ -109,11 +180,6 @@ export const SearchList = () => {
         item={searchItem}
         openModalSearchItem={openModalSearchItem}
         setopenModalSearchItem={setopenModalSearchItem}
-      />
-      <ModalPDF
-        url={"/src/assets/pdf.pdf"}
-        openModalPDF={openModalPDF}
-        setopenModalPDF={setopenModalPDF}
       />
     </div>
   );

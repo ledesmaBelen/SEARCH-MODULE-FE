@@ -17,6 +17,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CloseIcon from "@mui/icons-material/Close";
 import es from "date-fns/locale/es";
+import { listToMenuSearchFilters } from "../../../utils/Types";
 
 registerLocale("es", es);
 
@@ -31,14 +32,13 @@ export const HomeFiltersModal = ({
   const [valueRadioButtons, setvalueRadioButtons] = useState(
     radioButtons.find((button) => button.default).value
   );
+  const [valueRadioButtonsType, setvalueRadioButtonsType] = useState(
+    listToMenuSearchFilters.find((button) => button.default).code
+  );
   const [checks, setChecks] = useState(checkboxs);
 
   const handleChangeRadioButtons = (e) => {
     setvalueRadioButtons(e.target.value);
-    // falta valor por default
-    const button = radioButtons.find(
-      (button) => button.value === e.target.value
-    );
   };
 
   const handlesetCheckboxs = (item, event) => {
@@ -58,10 +58,15 @@ export const HomeFiltersModal = ({
       hasta,
       valueRadioButtons,
       checks,
+      valueRadioButtonsType,
     };
     sessionStorage.setItem("filters", JSON.stringify(obj));
     setopenModalFilters(false);
     window.location.reload();
+  };
+
+  const handleChangeRadioButtonsTypeDocument = (e) => {
+    setvalueRadioButtonsType(e.target.value);
   };
 
   useEffect(() => {
@@ -78,6 +83,9 @@ export const HomeFiltersModal = ({
         count += checkboxs.length;
       }
       if (filters.desde || filters.hasta) count += 1;
+      if (filters.valueRadioButtonsType)
+        setvalueRadioButtonsType(filters.valueRadioButtonsType);
+
       setcontentBadgeFilters(count);
     }
   }, [openModalFilters]);
@@ -117,7 +125,7 @@ export const HomeFiltersModal = ({
           </Grid>
           <Grid item xs={8}>
             <Typography style={{ fontWeight: "bold" }}>
-              Mostrar resultados que contengan :
+              Mostrar resultados que contengan:
             </Typography>
           </Grid>
           <Grid item xs={4}>
@@ -133,7 +141,9 @@ export const HomeFiltersModal = ({
                   <FormControlLabel
                     key={item.value}
                     value={item.value}
-                    control={<Radio size="small" />}
+                    control={
+                      <Radio size="small" style={{ color: "#3c678b" }} />
+                    }
                     label={item.label}
                     style={{ height: 30 }}
                   />
@@ -153,6 +163,7 @@ export const HomeFiltersModal = ({
                       onChange={(event) => {
                         handlesetCheckboxs(item, event);
                       }}
+                      style={{ color: "#3c678b" }}
                     />
                   }
                   label={
@@ -165,6 +176,52 @@ export const HomeFiltersModal = ({
                 />
               ))}
             </FormGroup>
+          </Grid>
+          <Grid item xs={10} style={{ display: "flex", alignItems: "center" }}>
+            <Typography
+              style={{
+                fontSize: 15,
+                width: "20%",
+                fontWeight: "bold",
+              }}
+            >
+              Documento:
+            </Typography>
+            <FormControl
+              style={{
+                fontSize: 15,
+                width: "80%",
+                fontWeight: "bold",
+              }}
+            >
+              <RadioGroup
+                value={valueRadioButtonsType}
+                onChange={handleChangeRadioButtonsTypeDocument}
+              >
+                <div style={{ display: "flex" }}>
+                  {listToMenuSearchFilters.map((item) => (
+                    <FormControlLabel
+                      key={item.code}
+                      value={item.code}
+                      control={
+                        <Radio size="small" style={{ color: "#3c678b" }} />
+                      }
+                      label={
+                        <Typography
+                          style={{
+                            fontWeight: "bold",
+                            fontSize: "0.8rem",
+                          }}
+                        >
+                          {item.name}
+                        </Typography>
+                      }
+                      style={{ height: 32 }}
+                    />
+                  ))}
+                </div>
+              </RadioGroup>
+            </FormControl>
           </Grid>
           <Grid item xs={10}>
             <div className="box-inputs">

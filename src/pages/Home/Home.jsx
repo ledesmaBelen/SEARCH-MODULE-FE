@@ -12,6 +12,7 @@ import { BadgeFilters } from "../../components/Badges/BadgeFilters/BadgeFilters"
 import { BadgeGavel } from "../../components/Badges/BadgeGavel/BadgeGavel";
 import { ModalConfig } from "../../components/Modals/ModalConfig/ModalConfig";
 import { SearchItemModal } from "../../components/Modals/SearchItem/SearchItemModal";
+import { listToMenuSearchFilters } from "../../utils/Types";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export const Home = () => {
   };
 
   const handleSearchValue = (event) => {
-    if (event.key === "Enter") navigate(`/search?${value}`);
+    if (event.key === "Enter") navigate(`/search?value=${value}`);
   };
 
   const handleSidebarToggle = () => {
